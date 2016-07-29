@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %} 
+  <!-- Creating a row for treasure panels -->
+	<div class="row">
+	<!-- Looping over each treasure in the treasures list -->
+	{% for treasure in treasures %}
+			<!-- Creating a column for each treasure panel -->
+      <div class="col-md-4">
+      <div class="treasure panel panel-default">
+				<!-- Adding treasure title by username -->
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ treasure.name }}</h3>
+          <a class="panel-username" href="/user/{{treasure.user.username}}/">by: {{ treasure.user.username }}</a>
+        </div>
+				<!-- Adding treasure image -->
+        <div class="panel-body">
+          <a href="/{{treasure.id}}/">
+          <div class="treasure-photo">
+            <img src="{{ treasure.image.url }}">
+          </div>
+          </a>
+					<!-- Adding Like Button -->
+          <button id ="likes" data-id="{{treasure.id}}" class="btn btn-mini btn-danger glyphicon glyphicon-heart" type="button">
+            {% if treasure.likes > 0 %} {{ treasure.likes }} {% endif %}
+          </button>
+        </div>
+
+      </div>
+      </div>
+	  <!-- if last column in row -->
+      {% if forloop.counter|divisibleby:3 and not forloop.last %}
+        </div><br><div class="row">
+      {% endif %}
+	{% endfor %}
+	</div><br>
+
+<!-- Adding form for adding new treasures-->
+{% if user.is_authenticated %}
+<div class="treasure panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Add Treasure</h3>
+  </div>
+  <div class="panel-body">
+    <form enctype="multipart/form-data" action="post_url/" method="post" >
+      {% csrf_token %}
+      <div class="field-wrapper">
+        {{form.as_p}}
+      </div>
+      <input type="submit" value="Submit" />
+    </form>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
