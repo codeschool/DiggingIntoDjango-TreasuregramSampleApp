@@ -11,3 +11,5 @@ To build this app in the course we cover:
 3. Image Fields and image uploads
 4. User Authentication
 5. Django and AJAX to create a like button
+
+A requirement for using Image Fields is installing Pillow, so this project won't work without it.  You can install Pillow with pip - `pip install Pillow`
